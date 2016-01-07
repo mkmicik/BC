@@ -1,4 +1,4 @@
-package tankbattle.model;
+package tankbattle.client.stub;
 
 public class GameState {
 	

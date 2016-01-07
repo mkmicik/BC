@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="org/matrix/EJML-equation-0.26.jar"/>
 	<classpathentry kind="lib" path="org/matrix/EJML-experimental-0.26-sources.jar"/>
 	<classpathentry kind="lib" path="org/matrix/EJML-experimental-0.26.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.5.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

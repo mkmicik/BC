@@ -1,10 +1,6 @@
 package tankbattle.client.stub;
 
 import com.google.gson.*;
-
-import messages.MatchConnectResponse;
-import messages.Message;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.zeromq.ZMQ;

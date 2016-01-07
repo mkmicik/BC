@@ -11,7 +11,7 @@ public class GameState {
 	public double timeRemaining;
 	
 	class Tank {
-		protected int position[];
+		protected double position[];
 		protected String id;
 		protected int collisionRadius;
 		protected int speed;

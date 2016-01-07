@@ -71,10 +71,10 @@ final class Client
 		
 		// Add your algorithm here
 		System.out.println("Missing algorithm.");
-		while (true) {
-			SONObject gameState = comm.getJSONGameState(); 
-			System.out.println(gameState.);
-		}
+		//while (true) {
+			gameState = comm.getJSONGameState(); 
+			System.out.println(gameState.toString());
+		//}
 
 		System.out.println("Exiting...");
 	}

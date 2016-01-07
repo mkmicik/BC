@@ -1,8 +1,15 @@
 package tankbattle.client.stub;
 
+import com.google.gson.*;
+
+import messages.MatchConnectResponse;
+import messages.Message;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.zeromq.ZMQ;
+
+import tankbattle.model.*;
 
 final class Client
 {
@@ -65,17 +72,24 @@ final class Client
 		
 		System.out.println("Waiting for initial game state...");
 		
-		JSONObject gameState = comm.getJSONGameState(); // Blocking wait for game state example
-		
-		System.out.println("Received game state!");
-		
-		// Add your algorithm here
-		System.out.println("Missing algorithm.");
-		//while (true) {
-			gameState = comm.getJSONGameState(); 
-			System.out.println(gameState.toString());
-		//}
 
+		/**** BEGIN THE GAME ****/
+		
+		Gson gson = new Gson();
+		JSONObject jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+		GameState gameState = gson.fromJson(jsonState.toString(), GameState.class);
+		//GameState gameState = gson.fromJson(jsonState, GameState.class);
+		
+		String output = gson.toJson(gameState).toString();
+		System.out.println(output);
+		
+		//while (gameState.timeRemaining > 0) {
+			// make decisions
+			
+		//} 
+		
+		/**** END THE GAME ****/
+		
 		System.out.println("Exiting...");
 	}
 

@@ -84,26 +84,26 @@ public class MovementController {
 		
 		for (Tank enemy : enemies) {
 			for (Projectile proj : enemy.projectiles) {
-				//if (gamestate.inDanger(proj, tank)) {
+				if (gamestate.inDanger(proj, tank)) {
 					moveCommand = new Commands.MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
-				//}
+				}
 			}
 		}
 		
 		for (Tank friendly : friendlies) {
 			for (Projectile proj : friendly.projectiles) {
-				//if (gamestate.inDanger(proj, tank)) {
+				if (gamestate.inDanger(proj, tank)) {
 					if (moveCommand == null){
 						moveCommand = new Commands.MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
 					}
-				//}
+				}
 			}
 		}
 		String json_cmd = new String();
 		if (moveCommand != null) {
 			json_cmd = gson.toJson(moveCommand);
 			String response = comm.send(json_cmd);
-			System.out.println(response);
+			//System.out.println(response);
 		}
 									
 	}

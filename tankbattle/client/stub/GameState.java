@@ -127,7 +127,7 @@ public class GameState {
 		System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
 		
 		System.out.println("Projectile Pos: " + projectile.position[0] + projectile.position[1]);
-		System.out.println("Target Pos: " + target.position.length + target.position[1]);
+		System.out.println("Target Pos: " + target.position.[0] + target.position[1]);
 		
 //		if (inOurDirection(projectile, target) 
 //				&& lineOfSight(map, projectile.position, target.position) 

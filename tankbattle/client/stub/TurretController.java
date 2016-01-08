@@ -163,7 +163,6 @@ public class TurretController {
 			if (Math.abs(current.turret - angleToTarget) < 0.05 && 
 					canFire(current) && 
 					gamestate.canShoot(current, target)) {
-				// Need to check if shoot is off cooldown first.
 				firecmd = new Commands.FireCommand(clientToken, current.id);
 				lastFired.put(current.id, new Date());
 			} else {

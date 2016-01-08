@@ -181,6 +181,11 @@ public class GameState {
 			}
 		}
 		
+		// just return the first possible enemy
+		for (Tank enemy : enemies) {
+			return enemy;
+		}
+		
 		return getNearestEnemy(tank);
 	}
 	

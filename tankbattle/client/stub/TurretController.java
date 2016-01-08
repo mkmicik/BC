@@ -35,14 +35,14 @@ public class TurretController {
 	// For each of our tanks
 		// If its a slow tank aim for where the target currently is.
 		// Find location of target if our tank is the origin.
-		Tank target = gamestate.players[1].tanks[0];
 		/*System.out.println("Target Tank x = " + target.position[0]);
 		System.out.println("Target Tank y = " + target.position[1]);
 		System.out.println("");*/
-
+		
 		for(int i = 0; i < gamestate.getFriendlyTanks().length; i++)
 		{
 			Tank currentTank = gamestate.getFriendlyTanks()[i];
+			Tank target = gamestate.GetNearestEnemy(currentTank);
 			double angleToTarget;
 			if (currentTank.type.equals("TankSlow")){
 				double relativeX = target.position[0] - currentTank.position[0];

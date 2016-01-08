@@ -125,11 +125,15 @@ public class GameState {
 	 */
 	public boolean inDanger(Map m, Projectile projectile, Tank target) {
 		System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
-		if (inOurDirection(projectile, target) 
-				&& lineOfSight(map, projectile.position, target.position) 
-				&& inRange(projectile, target)) {
-			return true;
-		}
+		
+		System.out.println("Projectile Pos: " + projectile.position.length);
+		System.out.println("Target Pos: " + target.position.length);
+		
+//		if (inOurDirection(projectile, target) 
+//				&& lineOfSight(map, projectile.position, target.position) 
+//				&& inRange(projectile, target)) {
+//			return true;
+//		}
 		return false;
 	}
 	

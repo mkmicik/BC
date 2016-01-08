@@ -53,58 +53,57 @@ public class GameState {
 		}
 	}
 	
-	class Util {
-		
-		/* Get all my tanks */
-		public Tank[] getFriendlyTanks() {
-			for (Player p : players) {
-				if (p.name.equals("BeigeCardigan")) {
-					return p.tanks;
-				}
+	/* Get all my tanks */
+	public Tank[] getFriendlyTanks() {
+		for (Player p : players) {
+			if (p.name.equals("BeigeCardigan")) {
+				return p.tanks;
 			}
-			// should never reach this, but if there are no tanks we return nothing
-			return new Tank[0];
 		}
-		
-		/* Get all the enemies tanks */
-		public Tank[] getEnemyTanks() {
-			for (Player p : players) {
-				if (!p.name.equals("BeigeCardigan")) {
-					return p.tanks;
-				}
-			}
-			// should never reach this, but if there are no tanks we return nothing
-			return new Tank[0];
-		}
-		
-		/* Cardinal - TODO: change to real distance around obstacles and such */
-		private double getDistance(Tank t1, Tank t2) {
-			double x_dist = Math.abs(t1.position[0] - t2.position[0]);
-			double y_dist = Math.abs(t1.position[1] - t2.position[1]);
-			
-			return Math.sqrt(square(x_dist)+square(y_dist));
-		}
-		private double square(double d) { return d*d; }
-		
-		public Tank GetNearestEnemy(Tank t) {
-			Tank enemies[] = getEnemyTanks();
-			double min_dist  = Double.MAX_VALUE;
-			Tank nearest = null;
-			for (Tank enemy : enemies) {
-				double dist;
-				if ((dist = getDistance(t, enemy)) < min_dist) {
-					min_dist = dist;
-					nearest = enemy;
-				}
-			}
-			return nearest;
-		}
-		
-		//public boolean canFire(Tank shooter, Tank target) {
-		//	if (shoo)
-		//}
-		
-		
+		// should never reach this, but if there are no tanks we return nothing
+		return new Tank[0];
 	}
+	
+	/* Get all the enemies tanks */
+	public Tank[] getEnemyTanks() {
+		for (Player p : players) {
+			if (!p.name.equals("BeigeCardigan")) {
+				return p.tanks;
+			}
+		}
+		// should never reach this, but if there are no tanks we return nothing
+		return new Tank[0];
+	}
+	
+	/* Cardinal - TODO: change to real distance around obstacles and such */
+	private double getDistance(Tank t1, Tank t2) {
+		double x_dist = Math.abs(t1.position[0] - t2.position[0]);
+		double y_dist = Math.abs(t1.position[1] - t2.position[1]);
+		
+		return Math.sqrt(square(x_dist)+square(y_dist));
+	}
+	private double square(double d) { return d*d; }
+	
+	public Tank GetNearestEnemy(Tank t) {
+		Tank enemies[] = getEnemyTanks();
+		double min_dist  = Double.MAX_VALUE;
+		Tank nearest = null;
+		for (Tank enemy : enemies) {
+			double dist;
+			if ((dist = getDistance(t, enemy)) < min_dist) {
+				min_dist = dist;
+				nearest = enemy;
+			}
+		}
+		return nearest;
+	}
+	
+	//public boolean canFire(Tank shooter, Tank target) {
+	//	if (lineOfSight(shooter, target) && aimed()) {
+	//		
+	//	}
+	//}
+		
+		
 
 }

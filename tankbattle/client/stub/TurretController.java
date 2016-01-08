@@ -66,12 +66,15 @@ public class TurretController {
 
 			}
 			Commands.TurretRotateCommand cmd;
-			if ((currentTank.turret - angleToTarget) > 3.14) {
+			if (angleToTarget < 0) {
+				angleToTarget = 2*Math.PI + angleToTarget;
+			}
+			if ((currentTank.turret - angleToTarget) > 0) {
 				//send a rotate counterclockwise command of tank.angle + angletoTarget
-				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CCW, currentTank.turret + angleToTarget);
+				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
 			} else {
 				//send a rotate clockwise command of tank.angle - angletotarget
-				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
+				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CCW, angleToTarget - currentTank.turret);
 			}
 
 			String json_cmd = gson.toJson(cmd);

@@ -207,7 +207,7 @@ public class GameState {
 				return false;
 			}
 		}
-		
+		/*
 		Tank[] friendlies = getFriendlyTanks();
 		int coll_rad;
 		
@@ -222,6 +222,7 @@ public class GameState {
 				return false;
 			}
 		}
+		*/
 		return true;
 	}
 }

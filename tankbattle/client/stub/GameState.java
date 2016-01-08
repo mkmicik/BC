@@ -56,7 +56,7 @@ public class GameState {
 		
 		class Terrain {
 			protected String type;
-			protected BoundingBox boundingBox[];
+			protected BoundingBox boundingBox;
 			
 			class BoundingBox {
 				protected int corner[];

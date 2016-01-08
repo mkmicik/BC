@@ -116,7 +116,7 @@ final class Client
 		TurretController tc;
 		MovementController mc;
 		
-		while (true) {
+		//while (true) {
 			while (true) {
 				tc = TurretController.getInstance(comm, clientToken, gameState);
 				mc = MovementController.getInstance(comm, clientToken, gameState);
@@ -153,7 +153,7 @@ final class Client
 				//gameState = gson.fromJson(jsonState.toString(), GameState.class);
 				
 			} 
-		}
+		//}
 		
 				
 		/**** END THE GAME ****/

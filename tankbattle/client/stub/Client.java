@@ -133,8 +133,9 @@ final class Client
 			for (Tank t : myTanks) {
 				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);
-				System.out.println(json_cmd);
+				//System.out.println(json_cmd);
 				String response = comm.send(json_cmd);
+				System.out.println(response);
 			}
 			// send commands
 			

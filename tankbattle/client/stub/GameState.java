@@ -113,7 +113,7 @@ public class GameState {
 	private BoundingBox[] getProjectileImpassableTerrain(Map m) {
 		for (Terrain t : m.terrain) {
 			if (t.type.equals("SOLID")) {
-				return t.boundingBox;
+				//return t.boundingBox;
 			}
 		}
 		return new BoundingBox[0];

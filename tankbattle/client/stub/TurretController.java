@@ -74,7 +74,7 @@ public class TurretController {
 			}
 			Tank target = gamestate.GetNearestEnemy(currentTank);
 			double angleToTarget;
-			if (currentTank.type.equals("TankSlow")){
+			//if (currentTank.type.equals("TankSlow")){
 				double relativeX = target.position[0] - currentTank.position[0];
 				double relativeY = target.position[1] - currentTank.position[1];
 				angleToTarget = (Math.atan2(relativeY, relativeX));
@@ -83,18 +83,28 @@ public class TurretController {
 //				System.out.println("Relative X = " + relativeX);
 //				System.out.println("Relative X = " + relativeY);
 //				System.out.println("Current angle = " + currentTank.turret);
+
 				//System.out.println("Slow tank angle = \n" + angleToTarget);
 //				System.out.println("");
 				
-			} else {
+//			}
+			/*else {
 				angleToTarget = calculateLeadLocation(currentTank, target);
+<<<<<<< HEAD
 //				System.out.println("Current Tank x = " + currentTank.position[0]);
 //				System.out.println("Current Tank y = " + currentTank.position[1]);
 //				System.out.println("Current angle = " + currentTank.turret);
 				//System.out.println("Fast Tank angle = " + angleToTarget);
 //				System.out.println("");
+=======
+				System.out.println("Current Tank x = " + currentTank.position[0]);
+				System.out.println("Current Tank y = " + currentTank.position[1]);
+				System.out.println("Current angle = " + currentTank.turret);
+				System.out.println("Fast Tank angle = " + angleToTarget);
+				System.out.println("");
+>>>>>>> 2109c9e52cade4bd8c5e3c98e46565b9c3b00c6a
 
-			}
+			}*/
 			if (angleToTarget < 0) {
 				angleToTarget = 2*Math.PI + angleToTarget;
 			}

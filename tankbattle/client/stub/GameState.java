@@ -110,8 +110,8 @@ public class GameState {
 		return nearest;
 	}
 	
-	private BoundingBox[] getProjectileImpassableTerrain() {
-		for (Terrain t : map.terrain) {
+	private BoundingBox[] getProjectileImpassableTerrain(Map m) {
+		for (Terrain t : m.terrain) {
 			if (t.type.equals("SOLID")) {
 				return t.bounding;
 			}
@@ -123,10 +123,10 @@ public class GameState {
 	 * 2. Check if there are obstacles between us and the projectile
 	 * 3. Check if the projectile is in 
 	 */
-	public boolean inDanger(Projectile projectile, Tank target) {
+	public boolean inDanger(Map m, Projectile projectile, Tank target) {
 		System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
 		if (inOurDirection(projectile, target) 
-				&& lineOfSight(projectile.position, target.position) 
+				&& lineOfSight(map, projectile.position, target.position) 
 				&& inRange(projectile, target)) {
 			return true;
 		}
@@ -165,11 +165,11 @@ public class GameState {
 		return true;
 	}
 	*/
-	public boolean lineOfSight(double[] shooter, double[] target) {
+	public boolean lineOfSight(Map map, double[] shooter, double[] target) {
 		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
 				target[0], target[1]);
 		
-		BoundingBox[] solids = getProjectileImpassableTerrain();
+		BoundingBox[] solids = getProjectileImpassableTerrain(map);
 		for (BoundingBox bb : solids) {
 			Rectangle r = new Rectangle(bb.corner[0],bb.corner[1],bb.size[0],bb.size[1]);
 			if (lineOfSight.intersects(r)) {

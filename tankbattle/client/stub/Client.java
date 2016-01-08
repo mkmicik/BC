@@ -2,6 +2,8 @@ package tankbattle.client.stub;
 
 import com.google.gson.*;
 
+import java.io.*;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.zeromq.ZMQ;
@@ -23,12 +25,15 @@ final class Client
 	}
 
 	public static void run(String[] args)
-	{
-		String ipAddress = null;
-		String teamName = null;
-		String password = null;
-		String matchToken = null;
-
+	{	
+		Gson gson = new Gson();
+		Config config = null;
+				
+		//String ipAddress = null;
+		//String teamName = null;
+		//String password = null;
+		//String matchToken = null;
+		/*
 		if(args.length != 4) {
 			Client.printHelp();
 			return;
@@ -38,16 +43,52 @@ final class Client
 		teamName = args[1];
 		password = args[2];
 		matchToken = args[3];
+		 */
+		
+		// The name of the file to open.
+        String fileName = "cardigan.config";
+        
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        // Read from config one file at a time
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
 
+            while((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }   
+            bufferedReader.close();         
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println(
+                "Unable to open file '" + 
+                fileName + "'");                
+        }
+        catch(IOException ex) {
+            System.out.println(
+                "Error reading file '" 
+                + fileName + "'");                  
+            // Or we could just do this: 
+            // ex.printStackTrace();
+        }
+		
+        try {
+        	config = gson.fromJson(sb.toString(), Config.class);
+        } catch (JsonSyntaxException e) {
+        	System.out.println("Error Parsing Config File:");
+        	System.out.println(e.getMessage().toString());
+        	System.exit(-1);
+        }
+        
 		System.out.println("Starting Battle Tank Client...");
 
 		Command command = new Command();
 
 		// retrieve the command to connect to the server
-		String connectCommand = command.getMatchConnectCommand(teamName, password, matchToken);
+		String connectCommand = command.getMatchConnectCommand(config.TeamName, config.Password, config.MatchToken);
 
 		// retrieve the communication singleton
-		Communication comm = Communication.getInstance(ipAddress, matchToken);
+		Communication comm = Communication.getInstance(config.GameServerIP, config.MatchToken);
 
 		// send the command to connect to the server
 		System.out.println("Connecting to server...");
@@ -62,7 +103,7 @@ final class Client
 		}
 
 		// the GameInfo object will hold the client's name, token, game type, etc.
-		GameInfo gameInfo = new GameInfo(clientToken, teamName);
+		GameInfo gameInfo = new GameInfo(clientToken, config.TeamName);
 
 		// We are now connected to the server. Let's do some stuff:
 		System.out.println("Connected!");
@@ -72,7 +113,6 @@ final class Client
 
 		/**** BEGIN THE GAME ****/
 		
-		Gson gson = new Gson();
 		JSONObject jsonState = comm.getJSONGameState(); // Blocking wait for game state example
 		GameState gameState = gson.fromJson(jsonState.toString(), GameState.class);
 		//GameState gameState = gson.fromJson(jsonState, GameState.class);

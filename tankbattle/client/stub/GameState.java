@@ -124,12 +124,12 @@ public class GameState {
 	 * 3. Check if the projectile is in 
 	 */
 	public boolean inDanger(Map m, Projectile projectile, Tank target) {
-		System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
+		//System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
 		
-		System.out.println("Projectile Pos: " + projectile.position[0] + projectile.position[1]);
-		System.out.println("Target Pos: " + target.position[0] + target.position[1]);
+		//System.out.println("Projectile Pos: " + projectile.position[0] + projectile.position[1]);
+		//System.out.println("Target Pos: " + target.position[0] + target.position[1]);
 		
-		System.out.println(getProjectileImpassableTerrain(this.map).length);
+		System.out.println("Terrain: " + getProjectileImpassableTerrain(this.map).length);
 		
 //		if (inOurDirection(projectile, target) 
 //				&& lineOfSight(map, projectile.position, target.position) 

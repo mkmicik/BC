@@ -3,8 +3,8 @@ git add *
 Echo 'Success!'
 
 Echo 'Commiting changes...'
-git commit -m '$(curl -s http://whatthecommit.com/index.txt)'
-
+message=($curl http://whatthecommit.com/index.txt)
+git commit -m "$message"
 Echo 'Success!'
 
 Echo 'Pushing to master...!'

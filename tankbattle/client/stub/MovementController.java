@@ -51,7 +51,15 @@ public class MovementController {
 			
 			for (Tank enemy : enemies) {
 				for (Projectile proj : enemy.projectiles) {
-					if (gamestate.inDanger(gamestate.map, proj, currentTank)) {
+					if (gamestate.inDanger(proj, currentTank)) {
+						// do something
+					}
+				}
+			}
+			
+			for (Tank friendly : friendlies) {
+				for (Projectile proj : friendly.projectiles) {
+					if (gamestate.inDanger(proj, currentTank)) {
 						// do something
 					}
 				}

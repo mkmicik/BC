@@ -7,7 +7,10 @@ import tankbattle.client.stub.GameState.Tank.Projectile;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class GameState {
 	
@@ -96,7 +99,7 @@ public class GameState {
 	}
 	private double square(double d) { return d*d; }
 	
-	public Tank GetNearestEnemy(Tank t) {
+	public Tank getNearestEnemy(Tank t) {
 		Tank enemies[] = getEnemyTanks();
 		double min_dist  = Double.MAX_VALUE;
 		Tank nearest = null;
@@ -110,9 +113,9 @@ public class GameState {
 		return nearest;
 	}
 	
-	private ArrayList<Terrain> getProjectileImpassableTerrain(Map m) {
+	private ArrayList<Terrain> getProjectileImpassableTerrain() {
 		ArrayList<Terrain> solids = new ArrayList<Terrain>();
-		for (Terrain t : m.terrain) {
+		for (Terrain t : map.terrain) {
 			if (t.type.equals("SOLID")) {
 				solids.add(t);
 			}
@@ -124,16 +127,9 @@ public class GameState {
 	 * 2. Check if there are obstacles between us and the projectile
 	 * 3. Check if the projectile is in 
 	 */
-	public boolean inDanger(Map m, Projectile projectile, Tank target) {
-		//System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
-		
-		//System.out.println("Projectile Pos: " + projectile.position[0] + projectile.position[1]);
-		//System.out.println("Target Pos: " + target.position[0] + target.position[1]);
-		
-		//System.out.println("Terrain: " + getProjectileImpassableTerrain(this.map).length);
-		
+	public boolean inDanger(Projectile projectile, Tank target) {
 		if (inOurDirection(projectile, target) 
-				&& lineOfSight(map, projectile.position, target.position) 
+				&& lineOfSight(projectile.position, target.position) 
 				&& inRange(projectile, target)) {
 			return true;
 		}
@@ -157,28 +153,66 @@ public class GameState {
 	private boolean inRange(Projectile projectile, Tank target) {
 		return true;
 	}
-	/*
-	public boolean lineOfSight(Tank shooter, Tank target) {
-		Line2D lineOfSight = new Line2D.Double(shooter.position[0], shooter.position[1], 
-				target.position[0], target.position[1]);
+	
+	/* Acquires the best enemy to target */
+	public Tank acquireTarget(Tank tank) {
 		
-		BoundingBox[] solids = getProjectileImpassableTerrain();
-		for (BoundingBox bb : solids) {
-			Rectangle r = new Rectangle(bb.corner[0],bb.corner[1],bb.size[0],bb.size[1]);
+		Tank[] enemies = getEnemyTanks();
+		Arrays.sort(enemies, tankComparator(tank.position[0], tank.position[1]));
+		
+		for (Tank enemy : enemies) {
+			if (lineOfSight(tank.position, enemy.position)) {
+				return enemy;
+			}
+		}
+		return getNearestEnemy(tank);
+	}
+	
+	public boolean canShoot(Tank shooter, Tank target) {
+		if (lineOfSight(shooter.position, target.position)) {
+			return true;
+		}
+		return false;
+	}
+	
+	/* Used to sort tanks by shortest distance from the given tank */
+	private static Comparator<Tank> tankComparator(double x, double y)
+    {
+        final Point2D finalP = new Point2D.Double(x, y);
+        return new Comparator<Tank>()
+        {
+            @Override
+            public int compare(Tank t0, Tank t1)
+            {
+            	
+            	Point2D p0 = new Point2D.Double(t0.position[0], t0.position[1]);
+            	Point2D p1 = new Point2D.Double(t1.position[0], t1.position[1]);
+                double ds0 = p0.distanceSq(finalP);
+                double ds1 = p1.distanceSq(finalP);
+                return Double.compare(ds0, ds1);
+            }
+
+        };
+    }
+	
+	/* Checks if a line of sight exists between the two positions */
+	public boolean lineOfSight(double[] shooter, double[] target) {
+		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
+				target[0], target[1]);
+		
+		ArrayList<Terrain> solids = getProjectileImpassableTerrain();
+		for (Terrain t : solids) {
+			Rectangle r = new Rectangle(t.boundingBox.corner[0],t.boundingBox.corner[1],t.boundingBox.size[0],t.boundingBox.size[1]);
 			if (lineOfSight.intersects(r)) {
 				return false;
 			}
 		}
-		return true;
-	}
-	*/
-	public boolean lineOfSight(Map map, double[] shooter, double[] target) {
-		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
-				target[0], target[1]);
-		
-		ArrayList<Terrain> solids = getProjectileImpassableTerrain(map);
-		for (Terrain t : solids) {
-			Rectangle r = new Rectangle(t.boundingBox.corner[0],t.boundingBox.corner[1],t.boundingBox.size[0],t.boundingBox.size[1]);
+		Tank[] friendlies = getFriendlyTanks();
+		int coll_rad;
+		for (Tank t : friendlies) {
+			coll_rad = t.collisionRadius;
+			Rectangle r = new Rectangle((int)t.position[0] - coll_rad, (int)t.position[1]-coll_rad,
+					(int)t.position[0] + coll_rad, (int)t.position[1]+coll_rad);
 			if (lineOfSight.intersects(r)) {
 				return false;
 			}

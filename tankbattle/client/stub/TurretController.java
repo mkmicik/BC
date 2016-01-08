@@ -72,7 +72,12 @@ public class TurretController {
 			if (!currentTank.alive) {
 				continue;
 			}
-			Tank target = gamestate.GetNearestEnemy(currentTank);
+			//Tank target = gamestate.GetNearestEnemy(currentTank);
+			Tank target = gamestate.acquireTarget(currentTank);
+			if (target == null) {
+				continue;
+			}
+			
 			double angleToTarget;
 			//if (currentTank.type.equals("TankSlow")){
 				double relativeX = target.position[0] - currentTank.position[0];
@@ -110,7 +115,9 @@ public class TurretController {
 			}
 			Commands.TurretRotateCommand cmd = null;
 			Commands.FireCommand firecmd = null;
-			if (canFire(currentTank) && Math.abs(currentTank.turret - angleToTarget) < 0.05) {
+			if (Math.abs(currentTank.turret - angleToTarget) < 0.05 && 
+					canFire(currentTank) && 
+					gamestate.canShoot(currentTank, target)) {
 				// Need to check if shoot is off cooldown first.
 				firecmd = new Commands.FireCommand(clientToken, currentTank.id);
 				lastFired.put(currentTank.id, new Date());

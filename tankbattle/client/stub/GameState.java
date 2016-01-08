@@ -110,13 +110,14 @@ public class GameState {
 		return nearest;
 	}
 	
-	private BoundingBox[] getProjectileImpassableTerrain(Map m) {
+	private Terrain[] getProjectileImpassableTerrain(Map m) {
+		ArrayList<Terrain> solids = new ArrayList<Terrain>();
 		for (Terrain t : m.terrain) {
 			if (t.type.equals("SOLID")) {
-				//return t.boundingBox;
+				solids.add(t);
 			}
 		}
-		return new BoundingBox[0];
+		return (Terrain[]) solids.toArray();
 	}
 	/*
 	 * 1. Check if projectile is heading towards us
@@ -131,11 +132,11 @@ public class GameState {
 		
 		System.out.println("Terrain: " + getProjectileImpassableTerrain(this.map).length);
 		
-//		if (inOurDirection(projectile, target) 
-//				&& lineOfSight(map, projectile.position, target.position) 
-//				&& inRange(projectile, target)) {
-//			return true;
-//		}
+		if (inOurDirection(projectile, target) 
+				&& lineOfSight(map, projectile.position, target.position) 
+				&& inRange(projectile, target)) {
+			return true;
+		}
 		return false;
 	}
 	
@@ -175,9 +176,9 @@ public class GameState {
 		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
 				target[0], target[1]);
 		
-		BoundingBox[] solids = getProjectileImpassableTerrain(map);
-		for (BoundingBox bb : solids) {
-			Rectangle r = new Rectangle(bb.corner[0],bb.corner[1],bb.size[0],bb.size[1]);
+		Terrain[] solids = getProjectileImpassableTerrain(map);
+		for (Terrain t : solids) {
+			Rectangle r = new Rectangle(t.boundingBox.corner[0],t.boundingBox.corner[1],t.boundingBox.size[0],t.boundingBox.size[1]);
 			if (lineOfSight.intersects(r)) {
 				return false;
 			}

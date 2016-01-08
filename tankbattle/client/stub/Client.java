@@ -131,17 +131,18 @@ final class Client
 			// make decisions
 			Tank[] myTanks = gameState.getFriendlyTanks();
 			for (Tank t : myTanks) {
-				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(t.id, Commands.Direction.CCW, 1.0);
+				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);
-				
-				String response = comm.send(json_cmd, clientToken);
+				//System.out.println(json_cmd);
+				String response = comm.send(json_cmd);
+				System.out.println(response);
 			}
 			// send commands
 			
 			// get new state
 			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
 			gameState = gson.fromJson(jsonState.toString(), GameState.class);
-			System.out.println(gameState.timeRemaining);
+			//System.out.println(gameState.timeRemaining);
 		} 
 		
 		/**** END THE GAME ****/

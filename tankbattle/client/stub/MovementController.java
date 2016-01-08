@@ -51,7 +51,9 @@ public class MovementController {
 			
 			for (Tank enemy : enemies) {
 				for (Projectile proj : enemy.projectiles) {
-					if (willCollide())
+					if (gamestate.inDanger(proj, currentTank)) {
+						// do something
+					}
 				}
 			}
 			

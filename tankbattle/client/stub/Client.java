@@ -118,6 +118,9 @@ final class Client
 			//Tank[] myTanks = gameState.getFriendlyTanks();
 			TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
 			tc.update();
+			
+			MovementController mc = MovementController.getInstance(comm, clientToken, gameState);
+			mc.update();
 			/*for (Tank t : myTanks) {
 				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);

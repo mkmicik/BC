@@ -207,12 +207,14 @@ public class GameState {
 				return false;
 			}
 		}
-		/*
+		
 		Tank[] friendlies = getFriendlyTanks();
 		int coll_rad;
 		
 		for (Tank t : friendlies) {
-			//if (t.position[0] != shooter.)
+			if (t.position.equals(shooter)) {
+				continue;
+			}
 			coll_rad = t.collisionRadius;
 			Rectangle r = new Rectangle((int)t.position[0] - coll_rad, (int)t.position[1]-coll_rad,
 					(int)t.position[0] + coll_rad, (int)t.position[1]+coll_rad);
@@ -220,7 +222,7 @@ public class GameState {
 				return false;
 			}
 		}
-		*/
+		
 		return true;
 	}
 }

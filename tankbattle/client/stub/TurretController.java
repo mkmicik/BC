@@ -18,8 +18,10 @@ public class TurretController {
 	private static GameState gamestate;
 	private static Communication comm;
 	private static String clientToken;
+	private static Gson gson;
 	
 	private TurretController() {
+		gson = new Gson();
 		lastFired = new HashMap<String, Date>();
 	}
 	
@@ -144,8 +146,8 @@ public class TurretController {
 
 	public void doAction(Tank current){
 		
-		Gson gson = new Gson();
 		Tank target = gamestate.acquireTarget(current);
+		
 		if (target != null) {
 		
 			double relativeX = target.position[0] - current.position[0];

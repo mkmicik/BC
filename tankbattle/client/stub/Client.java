@@ -128,6 +128,9 @@ final class Client
 				}
 			}
 			
+			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+			gameState = gson.fromJson(jsonState.toString(), GameState.class);
+			
 			/*
 			// make decisions
 			//Tank[] myTanks = gameState.getFriendlyTanks();
@@ -146,8 +149,8 @@ final class Client
 			// send commands
 			
 			// get new state
-			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-			gameState = gson.fromJson(jsonState.toString(), GameState.class);
+			//jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+			//gameState = gson.fromJson(jsonState.toString(), GameState.class);
 			
 		} 
 		

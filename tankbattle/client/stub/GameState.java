@@ -11,8 +11,15 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
+import java.util.HashSet;
 
 public class GameState {
+	
+	/* Not part of the JSON model */
+	Set<Tank> alreadyTargeted = new HashSet<Tank>();
 	
 	public double timestamp;
 	public Player[] players;
@@ -159,12 +166,21 @@ public class GameState {
 		
 		Tank[] enemies = getEnemyTanks();
 		Arrays.sort(enemies, tankComparator(tank.position[0], tank.position[1]));
+		Queue<Tank> possibleTargets = new LinkedList<Tank>();
 		
 		for (Tank enemy : enemies) {
 			if (lineOfSight(tank.position, enemy.position)) {
+				possibleTargets.offer(enemy);
+			}
+		}
+		
+		for (Tank enemy : enemies) {
+			if (!alreadyTargeted.contains(enemy)) {
+				alreadyTargeted.add(enemy);
 				return enemy;
 			}
 		}
+		
 		return getNearestEnemy(tank);
 	}
 	

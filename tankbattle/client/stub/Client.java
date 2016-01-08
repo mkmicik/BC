@@ -116,44 +116,46 @@ final class Client
 		TurretController tc;
 		MovementController mc;
 		
-		while (true) {
-			
-			tc = TurretController.getInstance(comm, clientToken, gameState);
-			mc = MovementController.getInstance(comm, clientToken, gameState);
-			
-			for (Tank tank : gameState.getFriendlyTanks()) {
-				if (tank.alive) {
-					tc.doAction(tank);
-					mc.doAction(tank);
+		//while (true) {
+			while (true) {
+				tc = TurretController.getInstance(comm, clientToken, gameState);
+				mc = MovementController.getInstance(comm, clientToken, gameState);
+				
+				for (Tank tank : gameState.getFriendlyTanks()) {
+					if (tank.alive) {
+						tc.doAction(tank);
+						//mc.doAction(tank);
+					}
 				}
-			}
-			
-			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-			gameState = gson.fromJson(jsonState.toString(), GameState.class);
-			
-			/*
-			// make decisions
-			//Tank[] myTanks = gameState.getFriendlyTanks();
-			TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
-			tc.update();
-			
-			MovementController mc = MovementController.getInstance(comm, clientToken, gameState);
-			mc.update();
-			/*for (Tank t : myTanks) {
-				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
-				String json_cmd = gson.toJson(cmd);
-				//System.out.println(json_cmd);
-				String response = comm.send(json_cmd);
-				System.out.println(response);
-			}*/
-			// send commands
-			
-			// get new state
-			//jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-			//gameState = gson.fromJson(jsonState.toString(), GameState.class);
-			
-		} 
+				
+				jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+				gameState = gson.fromJson(jsonState.toString(), GameState.class);
+				
+				/*
+				// make decisions
+				//Tank[] myTanks = gameState.getFriendlyTanks();
+				TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
+				tc.update();
+				
+				MovementController mc = MovementController.getInstance(comm, clientToken, gameState);
+				mc.update();
+				/*for (Tank t : myTanks) {
+					Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
+					String json_cmd = gson.toJson(cmd);
+					//System.out.println(json_cmd);
+					String response = comm.send(json_cmd);
+					System.out.println(response);
+				}*/
+				// send commands
+				
+				// get new state
+				//jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+				//gameState = gson.fromJson(jsonState.toString(), GameState.class);
+				
+			} 
+		//}
 		
+				
 		/**** END THE GAME ****/
 		
 		//System.out.println("Exiting...");

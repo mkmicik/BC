@@ -1,5 +1,13 @@
 package tankbattle.client.stub;
 
+import tankbattle.client.stub.GameState.Map.Terrain;
+import tankbattle.client.stub.GameState.Map.Terrain.BoundingBox;
+
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
+import java.util.ArrayList;
+
 public class GameState {
 	
 	public double timestamp;
@@ -53,6 +61,11 @@ public class GameState {
 		}
 	}
 	
+	private class Point {
+		private double x, y;
+		public Point(double _x, double _y) { this.x = _x; this.y = _y; }
+	}
+	
 	/* Get all my tanks */
 	public Tank[] getFriendlyTanks() {
 		for (Player p : players) {
@@ -98,14 +111,26 @@ public class GameState {
 		return nearest;
 	}
 	
-	//private boolean lineOfSight(Tank shooter, Tank target) {
-		
-	//}
+	private BoundingBox[] getProjectileImpassableTerrain() {
+		for (Terrain t : map.terrain) {
+			if (t.type.equals("SOLID")) {
+				return t.bounding;
+			}
+		}
+		return new BoundingBox[0];
+	}
 	
-	//public boolean canFire(Tank shooter, Tank target) {
+	public boolean lineOfSight(Tank shooter, Tank target) {
+		Line2D lineOfSight = new Line2D.Double(shooter.position[0], shooter.position[1], 
+				target.position[0], target.position[1]);
 		
-	//}
-		
-		
-
+		BoundingBox[] solids = getProjectileImpassableTerrain();
+		for (BoundingBox bb : solids) {
+			Rectangle r = new Rectangle(bb.corner[0],bb.corner[1],bb.size[0],bb.size[1]);
+			if (lineOfSight.intersects(r)) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -120,10 +120,16 @@ final class Client
 		String output = gson.toJson(gameState).toString();
 		System.out.println(output);
 		
-		//while (gameState.timeRemaining > 0) {
+		while (gameState.timeRemaining > 0) {
 			// make decisions
 			
-		//} 
+			// send commands
+			
+			// get new state
+			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+			gameState = gson.fromJson(jsonState.toString(), GameState.class);
+			System.out.println(jsonState.toString());
+		} 
 		
 		/**** END THE GAME ****/
 		

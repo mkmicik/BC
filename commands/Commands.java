@@ -14,7 +14,8 @@ public class Commands {
 	}
 
 	public static class TurretRotateCommand {
-		public TurretRotateCommand(String tank_id, Direction direction, double rads) {
+		public TurretRotateCommand(String client_token, String tank_id, Direction direction, double rads) {
+			this.client_token = client_token;
 			this.tank_id = tank_id;
 			this.direction = direction;
 			this.rads = rads;
@@ -23,7 +24,7 @@ public class Commands {
 		private String comm_type = "ROTATE_TURRET";
 		private Direction direction;
 		private double rads;
-		private String client_token = ClientToken;
+		private String client_token;
 	}
 	
 }

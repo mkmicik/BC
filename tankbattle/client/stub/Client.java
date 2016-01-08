@@ -131,7 +131,7 @@ final class Client
 			// make decisions
 			Tank[] myTanks = gameState.getFriendlyTanks();
 			for (Tank t : myTanks) {
-				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(t.id, Commands.Direction.CCW, 1.0);
+				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);
 				//System.out.println(json_cmd);
 				String response = comm.send(json_cmd);

@@ -12,7 +12,6 @@ public class GameState {
 	
 	public Tank[] getFriendlyTanks() {
 		for (Player p : players) {
-			System.out.println(p.name);
 			if (p.name.equals("BeigeCardigan")) {
 				return p.tanks;
 			}

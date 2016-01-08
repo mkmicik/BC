@@ -3,6 +3,7 @@ package tankbattle.client.stub;
 import commands.Commands;
 import commands.Commands.MoveCommand;
 import commands.Commands.RotateCommand;
+import commands.Commands.StopCommand;
 import tankbattle.client.stub.GameState.Tank;
 import tankbattle.client.stub.GameState.Tank.Projectile;
 
@@ -67,6 +68,7 @@ public class MovementController {
 	public void turnPerpindicular(Tank tank) {
 	    Tank target = gamestate.acquireTarget(tank);
         RotateCommand turncmd = null;
+        StopCommand stopcmd = null;
 
         double relativeX = target.position[0] - tank.position[0];
         double relativeY = target.position[1] - tank.position[1];
@@ -76,7 +78,7 @@ public class MovementController {
         }
         // If youre already perpinicular dont turn
         if (Math.abs(tank.tracks - angleToTarget) < 0.05) {
-            return;
+        	stopcmd = new StopCommand(clientToken, tank.id, "ROTATE");
         } else {
             if ((tank.tracks - angleToTarget) > 0) {
                 //send a rotate counterclockwise command of tank.angle + angletoTarget
@@ -86,12 +88,14 @@ public class MovementController {
                 turncmd = new RotateCommand(clientToken, tank.id, Commands.Direction.CCW, angleToTarget - tank.tracks);
             }
         }
-        String json_cmd;
-        if (turncmd != null) {
+        String json_cmd = null;
+        if (stopcmd != null) {
+        	json_cmd = gson.toJson(stopcmd);
+        } else if (turncmd != null) {
             json_cmd = gson.toJson(turncmd);
-            String response = comm.send(json_cmd);
-            System.out.println(response);
         }
+        String response = comm.send(json_cmd);
+        System.out.println(response);
     }  
 	
 	public void doAction(Tank tank) {

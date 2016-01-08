@@ -125,7 +125,7 @@ public class GameState {
 	/*
 	 * 1. Check if projectile is heading towards us
 	 * 2. Check if there are obstacles between us and the projectile
-	 * 3. Check if the projectile is in 
+	 * 3. Check if the projectile is in range
 	 */
 	public boolean inDanger(Projectile projectile, Tank target) {
 		if (inOurDirection(projectile, target) 

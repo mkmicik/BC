@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Date;
 
 import commands.Commands;
-import commands.Commands.FireCommand;
 import tankbattle.client.stub.GameState;
 import tankbattle.client.stub.GameState.Tank;
 

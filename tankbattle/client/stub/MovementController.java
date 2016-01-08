@@ -3,6 +3,8 @@ package tankbattle.client.stub;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import commands.Commands;
+
 
 import tankbattle.client.stub.GameState.Tank;
 import tankbattle.client.stub.GameState.Tank.Projectile;
@@ -74,6 +76,32 @@ public class MovementController {
 	}
 	
 	public void doAction(Tank tank) {
-	
+		Gson gson = new Gson();
+		Commands.MoveCommand moveCommand = null;
+
+		Tank[] friendlies = gamestate.getFriendlyTanks();
+		Tank[] enemies = gamestate.getEnemyTanks();
+		
+		for (Tank enemy : enemies) {
+			for (Projectile proj : enemy.projectiles) {
+				if (gamestate.inDanger(proj, tank)) {
+					moveCommand = new Commands.MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
+				}
+			}
+		}
+		
+		for (Tank friendly : friendlies) {
+			for (Projectile proj : friendly.projectiles) {
+				if (gamestate.inDanger(proj, tank)) {
+					// do something
+				}
+			}
+		}
+		String json_cmd = null;
+		if (moveCommand != null) {
+			json_cmd = gson.toJson(moveCommand);
+		}
+		String response = comm.send(json_cmd);
+									
 	}
 }

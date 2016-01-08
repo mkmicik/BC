@@ -124,7 +124,7 @@ final class Client
 				for (Tank tank : gameState.getFriendlyTanks()) {
 					if (tank.alive) {
 						tc.doAction(tank);
-						mc.doAction(tank);
+						//mc.doAction(tank);
 					}
 				}
 				

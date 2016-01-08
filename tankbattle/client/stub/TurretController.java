@@ -7,8 +7,8 @@ import tankbattle.client.stub.GameState.Tank;
 
 
 public class TurretController {
-	private  TurretController _instance;
-	public GameState gamestate;
+	private  static TurretController _instance;
+	private static GameState gamestate;
 
 	public TurretController(GameState gs) {
 		gamestate = gs;
@@ -20,7 +20,7 @@ public class TurretController {
 		}
 		return _instance;
 	}
-	public TurretController getInstance(GameState gs) {
+	public static TurretController getInstance(GameState gs) {
 		if (_instance == null) {
 			_instance = new TurretController(gs);
 		}

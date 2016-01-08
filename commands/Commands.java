@@ -47,7 +47,7 @@ public class Commands {
 			this.distance = dist;
 		}
 		private String tank_id;
-		private String comm_type = "Move";
+		private String comm_type = "MOVE";
 		private String client_token;
 		private MoveDirection direction;
 		private double distance;

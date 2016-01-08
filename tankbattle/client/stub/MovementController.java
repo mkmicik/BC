@@ -1,17 +1,13 @@
 package tankbattle.client.stub;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import commands.Commands;
-
-
+import commands.Commands.MoveCommand;
+import commands.Commands.RotateCommand;
 import tankbattle.client.stub.GameState.Tank;
 import tankbattle.client.stub.GameState.Tank.Projectile;
 
 import com.google.gson.Gson;
 
-import commands.Commands;
 
 public class MovementController {
 	private static MovementController _instance;
@@ -52,7 +48,6 @@ public class MovementController {
 			if (!currentTank.alive) {
 				continue;
 			}
-			
 			for (Tank enemy : enemies) {
 				for (Projectile proj : enemy.projectiles) {
 					if (gamestate.inDanger(proj, currentTank)) {
@@ -60,7 +55,6 @@ public class MovementController {
 					}
 				}
 			}
-			
 			for (Tank friendly : friendlies) {
 				for (Projectile proj : friendly.projectiles) {
 					if (gamestate.inDanger(proj, currentTank)) {
@@ -68,24 +62,51 @@ public class MovementController {
 					}
 				}
 			}
-			
-			
-			
-			
 		}							
 	}
+	public void turnPerpindicular(Tank tank) {
+	    Tank target = gamestate.acquireTarget(tank);
+        RotateCommand turncmd = null;
+
+        double relativeX = target.position[0] - tank.position[0];
+        double relativeY = target.position[1] - tank.position[1];
+        double angleToTarget = (Math.atan2(relativeY, relativeX));
+        if (angleToTarget < 0) {
+            angleToTarget = 2*Math.PI + angleToTarget;
+        }
+        // If youre already perpinicular dont turn
+        if (Math.abs(tank.tracks - angleToTarget) < 0.05) {
+            return;
+        } else {
+            if ((tank.tracks - angleToTarget) > 0) {
+                //send a rotate counterclockwise command of tank.angle + angletoTarget
+                turncmd = new RotateCommand(clientToken, tank.id, Commands.Direction.CW, tank.tracks - angleToTarget);
+            } else {
+                //send a rotate clockwise command of angletotarget - tank.angle 
+                turncmd = new RotateCommand(clientToken, tank.id, Commands.Direction.CCW, angleToTarget - tank.tracks);
+            }
+        }
+        String json_cmd;
+        if (turncmd != null) {
+            json_cmd = gson.toJson(turncmd);
+            String response = comm.send(json_cmd);
+            System.out.println(response);
+        }
+    }                   
 	
 	public void doAction(Tank tank) {
 		Gson gson = new Gson();
-		Commands.MoveCommand moveCommand = null;
+		MoveCommand moveCommand = null;
 
 		Tank[] friendlies = gamestate.getFriendlyTanks();
 		Tank[] enemies = gamestate.getEnemyTanks();
 		
+		turnPerpindicular(tank);
+		
 		for (Tank enemy : enemies) {
 			for (Projectile proj : enemy.projectiles) {
 				if (gamestate.inDanger(proj, tank)) {
-					moveCommand = new Commands.MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
+					moveCommand = new MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
 				}
 			}
 		}
@@ -94,7 +115,7 @@ public class MovementController {
 			for (Projectile proj : friendly.projectiles) {
 				if (gamestate.inDanger(proj, tank)) {
 					if (moveCommand == null){
-						moveCommand = new Commands.MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
+						moveCommand = new MoveCommand(clientToken, tank.id, Commands.MoveDirection.FWD, 10);
 					}
 				}
 			}

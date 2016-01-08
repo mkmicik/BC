@@ -72,5 +72,17 @@ public class Commands {
         private Direction direction;
         private double rads;
     }
+	public static class StopCommand {
+        public StopCommand(String client_token, String tank_id, String control) {
+            this.client_token = client_token;
+            this.tank_id = tank_id;
+            this.control = control;
+        }
+        private String tank_id;
+        private String comm_type = "STOP";
+        private String client_token;
+        private String control;
+
+    }
 	
 }

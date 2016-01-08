@@ -115,6 +115,11 @@ final class Client
 		
 		TurretController tc;
 		MovementController mc;
+		for (Tank tank : gameState.getFriendlyTanks()) {
+			if (tank.alive) {
+				mc.turnPerpindicular(tank);
+			}
+		}
 		
 		//while (true) {
 			while (true) {

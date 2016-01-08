@@ -40,9 +40,9 @@ public class TurretController {
 		System.out.println("Target Tank y = " + target.position[1]);
 		System.out.println("");*/
 
-		for(int i = 0; i < gamestate.players[0].tanks.length; i++)
+		for(int i = 0; i < gamestate.getFriendlyTanks().length; i++)
 		{
-			Tank currentTank = gamestate.players[0].tanks[i];
+			Tank currentTank = gamestate.getFriendlyTanks()[i];
 			double angleToTarget;
 			if (currentTank.type.equals("TankSlow")){
 				double relativeX = target.position[0] - currentTank.position[0];

@@ -112,9 +112,24 @@ final class Client
 		String output = gson.toJson(gameState).toString();
 		System.out.println(output);
 		
-		//while (gameState.timeRemaining > 0) {
+		
+		TurretController tc;
+		MovementController mc;
+		
 		while (true) {
-		// make decisions
+			
+			tc = TurretController.getInstance(comm, clientToken, gameState);
+			mc = MovementController.getInstance(comm, clientToken, gameState);
+			
+			for (Tank tank : gameState.getFriendlyTanks()) {
+				if (tank.alive) {
+					tc.doAction(tank);
+					mc.doAction(tank);
+				}
+			}
+			
+			/*
+			// make decisions
 			//Tank[] myTanks = gameState.getFriendlyTanks();
 			TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
 			tc.update();
@@ -133,7 +148,7 @@ final class Client
 			// get new state
 			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
 			gameState = gson.fromJson(jsonState.toString(), GameState.class);
-			//System.out.println(gameState.timeRemaining);
+			
 		} 
 		
 		/**** END THE GAME ****/

@@ -142,6 +142,50 @@ public class TurretController {
 		}							
 	}
 
+	public void doAction(Tank current){
+		
+		Gson gson = new Gson();
+		Tank target = gamestate.acquireTarget(current);
+		if (target != null) {
+		
+			double relativeX = target.position[0] - current.position[0];
+			double relativeY = target.position[1] - current.position[1];
+			double angleToTarget = (Math.atan2(relativeY, relativeX));
+			
+			if (angleToTarget < 0) {
+				angleToTarget = 2*Math.PI + angleToTarget;
+			}
+			
+			Commands.TurretRotateCommand cmd = null;
+			Commands.FireCommand firecmd = null;
+			
+			if (Math.abs(current.turret - angleToTarget) < 0.05 && 
+					canFire(current) && 
+					gamestate.canShoot(current, target)) {
+				// Need to check if shoot is off cooldown first.
+				firecmd = new Commands.FireCommand(clientToken, current.id);
+				lastFired.put(current.id, new Date());
+			} else {
+				if ((current.turret - angleToTarget) > 0) {
+					//send a rotate counterclockwise command of tank.angle + angletoTarget
+					cmd = new Commands.TurretRotateCommand(clientToken, current.id, Commands.Direction.CW, current.turret - angleToTarget);
+				} else {
+					//send a rotate clockwise command of tank.angle - angletotarget
+					cmd = new Commands.TurretRotateCommand(clientToken, current.id, Commands.Direction.CCW, angleToTarget - current.turret);
+				}
+			}
+			String json_cmd;
+			if (firecmd != null) {
+				json_cmd = gson.toJson(firecmd);
+			} else {
+				json_cmd = gson.toJson(cmd);
+			}
+			String response = comm.send(json_cmd);
+			//System.out.println(response);
+		}					
+	}
+
+	
 // http://stackoverflow.com/questions/2248876/2d-game-fire-at-a-moving-target-by-predicting-intersection-of-projectile-and-u
 /*
 * Return the firing solution for a projectile starting at 'src' with

@@ -71,4 +71,8 @@ public class MovementController {
 		}							
 	}
 	
+	public void doAction(Tank tank) {
+		
+	}
+	
 }

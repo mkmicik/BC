@@ -50,9 +50,6 @@ public class MovementController {
 			}
 			
 			for (Tank enemy : enemies) {
-				if (!enemy.alive) {
-					continue;
-				}
 				for (Projectile proj : enemy.projectiles) {
 					if (gamestate.inDanger(proj, currentTank)) {
 						// do something

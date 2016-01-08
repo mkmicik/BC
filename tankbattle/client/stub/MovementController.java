@@ -74,33 +74,6 @@ public class MovementController {
 	}
 	
 	public void doAction(Tank tank) {
-		
-		Tank[] friendlies = gamestate.getFriendlyTanks();
-		Tank[] enemies = gamestate.getEnemyTanks();
-		
-		for(int i = 0; i < friendlies.length; i++)
-		{
-			Tank currentTank = friendlies[i];
-			if (!currentTank.alive) {
-				continue;
-			}
-			
-			for (Tank enemy : enemies) {
-				for (Projectile proj : enemy.projectiles) {
-					if (gamestate.inDanger(proj, currentTank)) {
-						// do something
-					}
-				}
-			}
-			
-			for (Tank friendly : friendlies) {
-				for (Projectile proj : friendly.projectiles) {
-					if (gamestate.inDanger(proj, currentTank)) {
-						// do something
-					}
-				}
-			}
-			
-	}
 	
+	}
 }

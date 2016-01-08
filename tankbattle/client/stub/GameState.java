@@ -210,9 +210,9 @@ public class GameState {
 		
 		Tank[] friendlies = getFriendlyTanks();
 		int coll_rad;
-		/*
+		
 		for (Tank t : friendlies) {
-			if (t.position.equals(shooter)) {
+			if (t.position[0] == shooter[0] && t.position[1] == shooter[1]) {
 				continue;
 			}
 			coll_rad = t.collisionRadius;
@@ -222,7 +222,6 @@ public class GameState {
 				return false;
 			}
 		}
-		*/
 		return true;
 	}
 }

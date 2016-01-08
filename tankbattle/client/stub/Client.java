@@ -134,7 +134,7 @@ final class Client
 				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);
 				
-				String response = comm.send(json_cmd, Command.Key.CLIENT_TOKEN);
+				String response = comm.send(json_cmd, clientToken);
 			}
 			// send commands
 			

@@ -141,7 +141,7 @@ final class Client
 			// get new state
 			jsonState = comm.getJSONGameState(); // Blocking wait for game state example
 			gameState = gson.fromJson(jsonState.toString(), GameState.class);
-			System.out.println(gameState.timeRemaining);
+			//System.out.println(gameState.timeRemaining);
 		} 
 		
 		/**** END THE GAME ****/

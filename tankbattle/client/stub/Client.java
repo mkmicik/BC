@@ -33,22 +33,7 @@ final class Client
 		Gson gson = new Gson();
 		Config config = null;
 		Commands commands;
-				
-		//String ipAddress = null;
-		//String teamName = null;
-		//String password = null;
-		//String matchToken = null;
-		/*
-		if(args.length != 4) {
-			Client.printHelp();
-			return;
-		}
-
-		ipAddress = args[0];
-		teamName = args[1];
-		password = args[2];
-		matchToken = args[3];
-		 */
+		
 		
 		// The name of the file to open.
         String fileName = "cardigan.config";
@@ -130,13 +115,16 @@ final class Client
 		while (gameState.timeRemaining > 0) {
 			// make decisions
 			Tank[] myTanks = gameState.getFriendlyTanks();
-			for (Tank t : myTanks) {
+			
+			TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
+			tc.update();
+			/*for (Tank t : myTanks) {
 				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
 				String json_cmd = gson.toJson(cmd);
 				//System.out.println(json_cmd);
 				String response = comm.send(json_cmd);
 				System.out.println(response);
-			}
+			}*/
 			// send commands
 			
 			// get new state

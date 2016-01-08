@@ -5,30 +5,33 @@ import commands.Commands;
 import tankbattle.client.stub.GameState;
 import tankbattle.client.stub.GameState.Tank;
 
+import com.google.gson.*;
 
 public class TurretController {
-	private  static TurretController _instance;
+	private static TurretController _instance;
 	private static GameState gamestate;
+	private static Communication comm;
+	private static String clientToken;
 
-	public TurretController(GameState gs) {
-		gamestate = gs;
-	}
-	
 	public TurretController getInstance() {
 		if (_instance == null) {
-			_instance = new TurretController(null);
+			_instance = new TurretController();
 		}
 		return _instance;
 	}
-	public static TurretController getInstance(GameState gs) {
+	public static TurretController getInstance(Communication c, String ct, GameState gs) {
 		if (_instance == null) {
-			_instance = new TurretController(gs);
+			_instance = new TurretController();
 		}
 		gamestate = gs;
+		comm = c;
+		clientToken = ct;
 		return _instance;
 	}
 	
 	public void update(){
+		
+		Gson gson = new Gson();
 	// For each of our tanks
 		// If its a slow tank aim for where the target currently is.
 		// Find location of target if our tank is the origin.
@@ -62,13 +65,19 @@ public class TurretController {
 //				System.out.println("");
 
 			}
+			Commands.TurretRotateCommand cmd;
 			if ((currentTank.turret - angleToTarget) > 3.14) {
 				//send a rotate counterclockwise command of tank.angle + angletoTarget
-				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(currentTank.id, Commands.Direction.CCW, currentTank.turret + angleToTarget);
+				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CCW, currentTank.turret + angleToTarget);
 			} else {
 				//send a rotate clockwise command of tank.angle - angletotarget
-				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
+				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
 			}
+
+			String json_cmd = gson.toJson(cmd);
+			//System.out.println(json_cmd);
+			String response = comm.send(json_cmd);
+			System.out.println(response);
 		}							
 	}
 

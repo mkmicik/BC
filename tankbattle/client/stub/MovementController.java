@@ -105,7 +105,6 @@ public class MovementController {
 		Tank[] friendlies = gamestate.getFriendlyTanks();
 		Tank[] enemies = gamestate.getEnemyTanks();
 		
-		turnPerpindicular(tank);
 		
 		for (Tank enemy : enemies) {
 			for (Projectile proj : enemy.projectiles) {

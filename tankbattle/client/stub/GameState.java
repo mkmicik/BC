@@ -10,6 +10,16 @@ public class GameState {
 	public Map map;
 	public double timeRemaining;
 	
+	public Tank[] getFriendlyTanks() {
+		for (Player p : players) {
+			if (p.name.equals("BeigeCardigan")) {
+				return p.tanks;
+			}
+		}
+		// should never reach this, but if there are no tanks we return nothing
+		return new Tank[0];
+	}
+	
 	class Tank {
 		protected double position[];
 		protected String id;

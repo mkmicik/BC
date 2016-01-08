@@ -8,7 +8,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.zeromq.ZMQ;
 
+import tankbattle.client.stub.GameState.Tank;
 import tankbattle.model.*;
+import commands.Commands;
+import commands.Commands.Direction;
+import commands.Commands.TurretRotateCommand;
 
 final class Client
 {
@@ -28,6 +32,7 @@ final class Client
 	{	
 		Gson gson = new Gson();
 		Config config = null;
+		Commands commands;
 				
 		//String ipAddress = null;
 		//String teamName = null;
@@ -82,6 +87,8 @@ final class Client
         
 		System.out.println("Starting Battle Tank Client...");
 
+		commands = new Commands(config.MatchToken);
+		
 		Command command = new Command();
 
 		// retrieve the command to connect to the server
@@ -122,7 +129,13 @@ final class Client
 		
 		while (gameState.timeRemaining > 0) {
 			// make decisions
-			
+			Tank[] myTanks = gameState.getFriendlyTanks();
+			for (Tank t : myTanks) {
+				Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(t.id, Commands.Direction.CCW, 1.0);
+				String json_cmd = gson.toJson(cmd);
+				
+				String response = comm.send(json_cmd, Command.Key.CLIENT_TOKEN);
+			}
 			// send commands
 			
 			// get new state

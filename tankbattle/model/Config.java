@@ -1,8 +1,18 @@
 package tankbattle.model;
 
 public class Config {
-	public String TeamName = "BeigeCardigan";
-	public String Password = "boldcolordryerase";
-	public String MatchToken = "85baef59-a15f-4b13-8c7b-ebf81621b3a5";
-	public String GameServerIP = "ip-10-0-0-229.ec2.internal";
+	private static Config _instance;
+	private Config() {}
+	
+	public static Config getInstance() {
+		if (_instance == null) {
+			_instance = new Config();
+		}
+		return _instance;
+	}
+	
+	public String TeamName;
+	public String Password;
+	public String MatchToken;
+	public String GameServerIP;
 }

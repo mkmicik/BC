@@ -17,6 +17,7 @@ final class Command
 
 		class CommType {
 			private static final String MATCH_CONNECT = "MatchConnect";
+			private static final String ROTATE_TURRET = "ROTATE_TURRET";
 		}
 	}
 
@@ -36,7 +37,6 @@ final class Command
 
 		return json.toString();
 	}
-	
 
 }
 

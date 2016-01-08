@@ -26,7 +26,7 @@ public class GameState {
 		protected double turret;
 		
 		class Projectile {
-			protected int position[];
+			protected double position[];
 			protected String id;
 			protected int speed;
 		}

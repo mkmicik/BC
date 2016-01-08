@@ -112,10 +112,10 @@ final class Client
 		String output = gson.toJson(gameState).toString();
 		System.out.println(output);
 		
-		while (gameState.timeRemaining > 0) {
-			// make decisions
-			Tank[] myTanks = gameState.getFriendlyTanks();
-			
+		//while (gameState.timeRemaining > 0) {
+		while (true) {
+		// make decisions
+			//Tank[] myTanks = gameState.getFriendlyTanks();
 			TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
 			tc.update();
 			/*for (Tank t : myTanks) {
@@ -135,7 +135,7 @@ final class Client
 		
 		/**** END THE GAME ****/
 		
-		System.out.println("Exiting...");
+		//System.out.println("Exiting...");
 	}
 
 	public static void printHelp()

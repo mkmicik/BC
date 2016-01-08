@@ -2,6 +2,7 @@ package tankbattle.client.stub;
 
 import tankbattle.client.stub.GameState.Map.Terrain;
 import tankbattle.client.stub.GameState.Map.Terrain.BoundingBox;
+import tankbattle.client.stub.GameState.Tank.Projectile;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -34,9 +35,12 @@ public class GameState {
 		protected double turret;
 		
 		class Projectile {
-			protected double position[];
 			protected String id;
+			protected double position[];
+			protected double direction;
 			protected int speed;
+			protected int damage;
+			protected double range;
 		}
 	}
 	
@@ -59,11 +63,6 @@ public class GameState {
 				protected int size[];
 			}
 		}
-	}
-	
-	private class Point {
-		private double x, y;
-		public Point(double _x, double _y) { this.x = _x; this.y = _y; }
 	}
 	
 	/* Get all my tanks */
@@ -119,10 +118,56 @@ public class GameState {
 		}
 		return new BoundingBox[0];
 	}
+	/*
+	 * 1. Check if projectile is heading towards us
+	 * 2. Check if there are obstacles between us and the projectile
+	 * 3. Check if the projectile is in 
+	 */
+	public boolean inDanger(Projectile projectile, Tank target) {
+		System.out.println("ID: " + projectile.id + " Range: " + projectile.range);
+		if (inOurDirection(projectile, target) 
+				&& lineOfSight(projectile.position, target.position) 
+				&& inRange(projectile, target)) {
+			return true;
+		}
+		return false;
+	}
 	
+	private boolean inOurDirection(Projectile projectile, Tank target) {
+		double relativeX = target.position[0] - projectile.position[0];
+		double relativeY = target.position[1] - projectile.position[1];
+		double angleToTarget = (Math.atan2(relativeY, relativeX));
+		if (angleToTarget < 0) {
+			angleToTarget = 2*Math.PI + angleToTarget;
+		}
+		
+		if (Math.abs(angleToTarget - projectile.direction) < 0.05) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean inRange(Projectile projectile, Tank target) {
+		return true;
+	}
+	/*
 	public boolean lineOfSight(Tank shooter, Tank target) {
 		Line2D lineOfSight = new Line2D.Double(shooter.position[0], shooter.position[1], 
 				target.position[0], target.position[1]);
+		
+		BoundingBox[] solids = getProjectileImpassableTerrain();
+		for (BoundingBox bb : solids) {
+			Rectangle r = new Rectangle(bb.corner[0],bb.corner[1],bb.size[0],bb.size[1]);
+			if (lineOfSight.intersects(r)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	*/
+	public boolean lineOfSight(double[] shooter, double[] target) {
+		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
+				target[0], target[1]);
 		
 		BoundingBox[] solids = getProjectileImpassableTerrain();
 		for (BoundingBox bb : solids) {

@@ -19,7 +19,7 @@ public class TurretController {
 	private static Communication comm;
 	private static String clientToken;
 	
-	public TurretController() {
+	private TurretController() {
 		lastFired = new HashMap<String, Date>();
 	}
 	
@@ -64,9 +64,14 @@ public class TurretController {
 		System.out.println("Target Tank y = " + target.position[1]);
 		System.out.println("");*/
 		
-		for(int i = 0; i < gamestate.getFriendlyTanks().length; i++)
+		Tank[] tanks = gamestate.getFriendlyTanks();
+		
+		for(int i = 0; i < tanks.length; i++)
 		{
-			Tank currentTank = gamestate.getFriendlyTanks()[i];
+			Tank currentTank = tanks[i];
+			if (!currentTank.alive) {
+				continue;
+			}
 			Tank target = gamestate.GetNearestEnemy(currentTank);
 			double angleToTarget;
 			if (currentTank.type.equals("TankSlow")){
@@ -78,7 +83,7 @@ public class TurretController {
 //				System.out.println("Relative X = " + relativeX);
 //				System.out.println("Relative X = " + relativeY);
 //				System.out.println("Current angle = " + currentTank.turret);
-				System.out.println("Slow tank angle = \n" + angleToTarget);
+				//System.out.println("Slow tank angle = \n" + angleToTarget);
 //				System.out.println("");
 				
 			} else {
@@ -86,7 +91,7 @@ public class TurretController {
 //				System.out.println("Current Tank x = " + currentTank.position[0]);
 //				System.out.println("Current Tank y = " + currentTank.position[1]);
 //				System.out.println("Current angle = " + currentTank.turret);
-				System.out.println("Fast Tank angle = " + angleToTarget);
+				//System.out.println("Fast Tank angle = " + angleToTarget);
 //				System.out.println("");
 
 			}
@@ -115,7 +120,7 @@ public class TurretController {
 				json_cmd = gson.toJson(cmd);
 			}
 			String response = comm.send(json_cmd);
-			System.out.println(response);
+			//System.out.println(response);
 
 		}							
 	}

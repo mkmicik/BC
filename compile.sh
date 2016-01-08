@@ -1,0 +1,1 @@
+javac -cp /usr/local/share/java/zmq.jar:lib/gson-2.5.jar:. tankbattle/client/stub/Client.java

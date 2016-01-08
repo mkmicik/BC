@@ -2,6 +2,7 @@ package tankbattle.client.stub;
 
 
 import commands.Commands;
+import commands.Commands.FireCommand;
 import tankbattle.client.stub.GameState;
 import tankbattle.client.stub.GameState.Tank;
 
@@ -65,22 +66,32 @@ public class TurretController {
 //				System.out.println("");
 
 			}
-			Commands.TurretRotateCommand cmd;
 			if (angleToTarget < 0) {
 				angleToTarget = 2*Math.PI + angleToTarget;
 			}
-			if ((currentTank.turret - angleToTarget) > 0) {
-				//send a rotate counterclockwise command of tank.angle + angletoTarget
-				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
+			Commands.TurretRotateCommand cmd = null;
+			Commands.FireCommand firecmd = null;
+			if (Math.abs(currentTank.turret - angleToTarget) < 0.05) {
+				// Need to check if shoot is off cooldown first.
+				firecmd = new Commands.FireCommand(clientToken, currentTank.id);
 			} else {
-				//send a rotate clockwise command of tank.angle - angletotarget
-				cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CCW, angleToTarget - currentTank.turret);
+				if ((currentTank.turret - angleToTarget) > 0) {
+					//send a rotate counterclockwise command of tank.angle + angletoTarget
+					cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CW, currentTank.turret - angleToTarget);
+				} else {
+					//send a rotate clockwise command of tank.angle - angletotarget
+					cmd = new Commands.TurretRotateCommand(clientToken, currentTank.id, Commands.Direction.CCW, angleToTarget - currentTank.turret);
+				}
 			}
-
-			String json_cmd = gson.toJson(cmd);
-			//System.out.println(json_cmd);
+			String json_cmd;
+			if (firecmd != null) {
+				json_cmd = gson.toJson(firecmd);
+			} else {
+				 json_cmd = gson.toJson(cmd);
+			}
 			String response = comm.send(json_cmd);
 			System.out.println(response);
+
 		}							
 	}
 

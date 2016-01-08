@@ -26,5 +26,14 @@ public class Commands {
 		private double rads;
 		private String client_token;
 	}
+	public static class FireCommand {
+		public FireCommand(String client_token, String tank_id) {
+			this.client_token = client_token;
+			this.tank_id = tank_id;
+		}
+		private String tank_id;
+		private String comm_type = "FIRE";
+		private String client_token;
+	}
 	
 }

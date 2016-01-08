@@ -166,14 +166,15 @@ public class GameState {
 		
 		Tank[] enemies = getEnemyTanks();
 		Arrays.sort(enemies, tankComparator(tank.position[0], tank.position[1]));
-		Queue<Tank> possibleTargets = new LinkedList<Tank>();
+		//Queue<Tank> possibleTargets = new LinkedList<Tank>();
 		
 		for (Tank enemy : enemies) {
 			if (lineOfSight(tank.position, enemy.position)) {
-				possibleTargets.offer(enemy);
+				return enemy;
+				//possibleTargets.offer(enemy);
 			}
 		}
-		
+		/*
 		for (Tank enemy : enemies) {
 			if (!alreadyTargeted.contains(enemy)) {
 				alreadyTargeted.add(enemy);
@@ -181,6 +182,11 @@ public class GameState {
 			}
 		}
 		
+		// just return the first possible enemy
+		for (Tank enemy : enemies) {
+			return enemy;
+		}
+		*/
 		return getNearestEnemy(tank);
 	}
 	

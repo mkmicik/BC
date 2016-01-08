@@ -103,6 +103,7 @@ public class MovementController {
 		if (moveCommand != null) {
 			json_cmd = gson.toJson(moveCommand);
 			String response = comm.send(json_cmd);
+			System.out.println(response);
 		}
 									
 	}

@@ -1,6 +1,10 @@
 package tankbattle.client.stub;
 
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Date;
+
 import commands.Commands;
 import commands.Commands.FireCommand;
 import tankbattle.client.stub.GameState;
@@ -10,9 +14,29 @@ import com.google.gson.*;
 
 public class TurretController {
 	private static TurretController _instance;
+	private Map<String, Date> lastFired;
 	private static GameState gamestate;
 	private static Communication comm;
 	private static String clientToken;
+	
+	public TurretController() {
+		lastFired = new HashMap<String, Date>();
+	}
+	
+	private boolean canFire(Tank tank) {
+		if (!lastFired.containsKey(tank.id)) {
+			return true;
+		} else {
+			Date now = new Date();
+			Date last = lastFired.get(tank.id);
+			long seconds = (now.getTime()-last.getTime())/1000;
+			if (tank.type.equals("TankSlow")) {
+				return seconds > 3;
+			} else {
+				return seconds > 5;
+			}
+		}
+	}
 
 	public TurretController getInstance() {
 		if (_instance == null) {
@@ -71,9 +95,10 @@ public class TurretController {
 			}
 			Commands.TurretRotateCommand cmd = null;
 			Commands.FireCommand firecmd = null;
-			if (Math.abs(currentTank.turret - angleToTarget) < 0.05) {
+			if (canFire(currentTank) && Math.abs(currentTank.turret - angleToTarget) < 0.05) {
 				// Need to check if shoot is off cooldown first.
 				firecmd = new Commands.FireCommand(clientToken, currentTank.id);
+				lastFired.put(currentTank.id, new Date());
 			} else {
 				if ((currentTank.turret - angleToTarget) > 0) {
 					//send a rotate counterclockwise command of tank.angle + angletoTarget
@@ -87,7 +112,7 @@ public class TurretController {
 			if (firecmd != null) {
 				json_cmd = gson.toJson(firecmd);
 			} else {
-				 json_cmd = gson.toJson(cmd);
+				json_cmd = gson.toJson(cmd);
 			}
 			String response = comm.send(json_cmd);
 			System.out.println(response);

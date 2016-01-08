@@ -98,10 +98,12 @@ public class GameState {
 		return nearest;
 	}
 	
+	//private boolean lineOfSight(Tank shooter, Tank target) {
+		
+	//}
+	
 	//public boolean canFire(Tank shooter, Tank target) {
-	//	if (lineOfSight(shooter, target) && aimed()) {
-	//		
-	//	}
+		
 	//}
 		
 		

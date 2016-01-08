@@ -92,7 +92,7 @@ public class MovementController {
             String response = comm.send(json_cmd);
             System.out.println(response);
         }
-    }                   
+    }  
 	
 	public void doAction(Tank tank) {
 		Gson gson = new Gson();

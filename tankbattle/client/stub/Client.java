@@ -133,11 +133,13 @@ final class Client
 					if (tank.alive) {
 						tc.doAction(tank);
 						mc.doAction(tank);
+
 					}
+					
+					jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+					gameState = gson.fromJson(jsonState.toString(), GameState.class);
 				}
 				
-				jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-				gameState = gson.fromJson(jsonState.toString(), GameState.class);
 				
 				/*
 				// make decisions

@@ -191,8 +191,29 @@ public class GameState {
 	}
 	
 	public boolean canShoot(Tank shooter, Tank target) {
-		if (lineOfSight(shooter.position, target.position)) {
+		if (lineOfSight(shooter.position, target.position)  {
+				//&& inRange(shooter, target)) {
 			return true;
+		}
+		return false;
+	}
+	
+	public boolean friendlyFire(double[] shooter, double[] target) {
+		Line2D lineOfSight = new Line2D.Double(shooter[0], shooter[1], 
+				target[0], target[1]);
+		
+		Tank[] friendlies = getFriendlyTanks();
+		int coll_rad;
+		for (Tank t : friendlies) {
+			if (t.position[0] == shooter[0] && t.position[1] == shooter[1]) {
+				continue;
+			}
+			coll_rad = t.collisionRadius;
+			Rectangle r = new Rectangle((int)t.position[0] - coll_rad, (int)t.position[1]-coll_rad,
+					(int)t.position[0] + coll_rad, (int)t.position[1] + coll_rad);
+			if (lineOfSight.intersects(r)) {
+				return true;
+			}
 		}
 		return false;
 	}

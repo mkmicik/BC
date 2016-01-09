@@ -125,7 +125,7 @@ final class Client
 		}
 		
 		//while (true) {
-			while (gameState.timeRemaining > 0) {
+			while (gameState.timeRemaining > 1) {
 				tc = TurretController.getInstance(comm, clientToken, gameState);
 				mc = MovementController.getInstance(comm, clientToken, gameState);
 				

@@ -77,21 +77,30 @@ public class GameState {
 	
 	/* Get all my tanks */
 	public Tank[] getFriendlyTanks() {
-		for (Player p : players) {
-			if (p.name.equals("BeigeCardigan")) {
-				return p.tanks;
+		try {
+			for (Player p : players) {
+				if (p.name.equals("BeigeCardigan")) {
+					return p.tanks;
+				}
 			}
+		} catch (Exception e) {
+			
 		}
 		// should never reach this, but if there are no tanks we return nothing
 		return new Tank[0];
+		
 	}
 	
 	/* Get all the enemies tanks */
 	public Tank[] getEnemyTanks() {
-		for (Player p : players) {
-			if (!p.name.equals("BeigeCardigan")) {
-				return p.tanks;
+		try {
+			for (Player p : players) {
+				if (!p.name.equals("BeigeCardigan")) {
+					return p.tanks;
+				}
 			}
+		} catch (Exception e) {
+			
 		}
 		// should never reach this, but if there are no tanks we return nothing
 		return new Tank[0];

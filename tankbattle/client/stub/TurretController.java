@@ -162,8 +162,8 @@ public class TurretController {
 			
 			if (Math.abs(current.turret - angleToTarget) < 0.05 && 
 					canFire(current) && 
-					gamestate.canShoot(current, target) &&
-					!gamestate.friendlyFire(current.position, target.position)) {
+					gamestate.canShoot(current, target))  {
+					/*&& !gamestate.friendlyFire(current.position, target.position)) { */
 				firecmd = new Commands.FireCommand(clientToken, current.id);
 				lastFired.put(current.id, new Date());
 			} else {

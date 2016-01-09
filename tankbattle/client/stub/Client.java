@@ -78,94 +78,77 @@ final class Client
 
 		// retrieve the command to connect to the server
 		while (true) {
-		String connectCommand = command.getMatchConnectCommand(config.TeamName, config.Password, config.MatchToken);
-
-		// retrieve the communication singleton
-		Communication comm = Communication.getInstance(config.GameServerIP, config.MatchToken);
-
-		// send the command to connect to the server
-		System.out.println("Connecting to server...");
-		String clientToken = comm.send(connectCommand, Command.Key.CLIENT_TOKEN);
-		System.out.println("Received client token... " + clientToken);
-		
-		// Check to make sure we are connected
-		if (null == clientToken)
-		{
-			System.out.println("Error: unable to connect!");
-			System.exit(-1);
-		}
-
-		// the GameInfo object will hold the client's name, token, game type, etc.
-		GameInfo gameInfo = new GameInfo(clientToken, config.TeamName);
-
-		// We are now connected to the server. Let's do some stuff:
-		System.out.println("Connected!");
-		
-		System.out.println("Waiting for initial game state...");
-		
-
-		/**** BEGIN THE GAME ****/
-		
-		JSONObject jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-		GameState gameState = gson.fromJson(jsonState.toString(), GameState.class);
-		//GameState gameState = gson.fromJson(jsonState, GameState.class);
-		
-		String output = gson.toJson(gameState).toString();
-		System.out.println(output);
-		
-		
-		TurretController tc;
-		MovementController mc;
-		mc = MovementController.getInstance(comm, clientToken, gameState);
-
-		for (Tank tank : gameState.getFriendlyTanks()) {
-			if (tank.alive) {
-				mc.turnPerpindicular(tank);
+			String connectCommand = command.getMatchConnectCommand(config.TeamName, config.Password, config.MatchToken);
+	
+			// retrieve the communication singleton
+			Communication comm = Communication.getInstance(config.GameServerIP, config.MatchToken);
+	
+			// send the command to connect to the server
+			System.out.println("Connecting to server...");
+			String clientToken = comm.send(connectCommand, Command.Key.CLIENT_TOKEN);
+			System.out.println("Received client token... " + clientToken);
+			
+			// Check to make sure we are connected
+			if (null == clientToken)
+			{
+				System.out.println("Error: unable to connect!");
+				System.exit(-1);
 			}
-		}
-		
-		//while (true) {
-			while (gameState.timeRemaining > 1) {
-				tc = TurretController.getInstance(comm, clientToken, gameState);
-				mc = MovementController.getInstance(comm, clientToken, gameState);
-				
-				for (Tank tank : gameState.getFriendlyTanks()) {
-					if (tank.alive) {
-						tc.doAction(tank);
-						mc.doAction(tank);
-
+	
+			// the GameInfo object will hold the client's name, token, game type, etc.
+			GameInfo gameInfo = new GameInfo(clientToken, config.TeamName);
+	
+			// We are now connected to the server. Let's do some stuff:
+			System.out.println("Connected!");
+			
+			System.out.println("Waiting for initial game state...");
+			
+	
+			/**** BEGIN THE GAME ****/
+			
+			JSONObject jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+			GameState gameState = gson.fromJson(jsonState.toString(), GameState.class);
+			//GameState gameState = gson.fromJson(jsonState, GameState.class);
+			
+			String output = gson.toJson(gameState).toString();
+			System.out.println(output);
+			
+			
+			TurretController tc;
+			MovementController mc;
+			mc = MovementController.getInstance(comm, clientToken, gameState);
+	
+			for (Tank tank : gameState.getFriendlyTanks()) {
+				if (tank.alive) {
+					mc.turnPerpindicular(tank);
+				}
+			}
+			
+				while (gameState.timeRemaining > 1) {
+					tc = TurretController.getInstance(comm, clientToken, gameState);
+					mc = MovementController.getInstance(comm, clientToken, gameState);
+					
+					for (Tank tank : gameState.getFriendlyTanks()) {
+						if (tank.alive) {
+							tc.doAction(tank);
+							mc.doAction(tank);
+	
+						}
+						
+						jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+						gameState = gson.fromJson(jsonState.toString(), GameState.class);
 					}
 					
-					jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-					gameState = gson.fromJson(jsonState.toString(), GameState.class);
+				} 
+				
+				try {
+					Thread.sleep(500);
+				} catch (Exception e) {
+					// do nothing
 				}
-				
-				
-				/*
-				// make decisions
-				//Tank[] myTanks = gameState.getFriendlyTanks();
-				TurretController tc = TurretController.getInstance(comm, clientToken, gameState);
-				tc.update();
-				
-				MovementController mc = MovementController.getInstance(comm, clientToken, gameState);
-				mc.update();
-				/*for (Tank t : myTanks) {
-					Commands.TurretRotateCommand cmd = new Commands.TurretRotateCommand(clientToken, t.id, Commands.Direction.CCW, 1.0);
-					String json_cmd = gson.toJson(cmd);
-					//System.out.println(json_cmd);
-					String response = comm.send(json_cmd);
-					System.out.println(response);
-				}*/
-				// send commands
-				
-				// get new state
-				//jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-				//gameState = gson.fromJson(jsonState.toString(), GameState.class);
-				
-			} 
-		//}
-		
+			
 		}
+		
 		/**** END THE GAME ****/
 		
 		//System.out.println("Exiting...");

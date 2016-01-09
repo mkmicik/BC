@@ -77,6 +77,7 @@ final class Client
 		Command command = new Command();
 
 		// retrieve the command to connect to the server
+		while (true) {
 		String connectCommand = command.getMatchConnectCommand(config.TeamName, config.Password, config.MatchToken);
 
 		// retrieve the communication singleton
@@ -124,22 +125,19 @@ final class Client
 		}
 		
 		//while (true) {
-			while (true) {
-				try {
-					tc = TurretController.getInstance(comm, clientToken, gameState);
-					mc = MovementController.getInstance(comm, clientToken, gameState);
-					
-					for (Tank tank : gameState.getFriendlyTanks()) {
-						if (tank.alive) {
-							tc.doAction(tank);
-							mc.doAction(tank);
-						}
+			while (gameState.timeRemaining > 1) {
+				tc = TurretController.getInstance(comm, clientToken, gameState);
+				mc = MovementController.getInstance(comm, clientToken, gameState);
+				
+				for (Tank tank : gameState.getFriendlyTanks()) {
+					if (tank.alive) {
+						tc.doAction(tank);
+						mc.doAction(tank);
+
 					}
 					
 					jsonState = comm.getJSONGameState(); // Blocking wait for game state example
 					gameState = gson.fromJson(jsonState.toString(), GameState.class);
-				} catch (Exception e) {
-					
 				}
 				
 				
@@ -167,7 +165,7 @@ final class Client
 			} 
 		//}
 		
-				
+		}
 		/**** END THE GAME ****/
 		
 		//System.out.println("Exiting...");

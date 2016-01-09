@@ -101,8 +101,6 @@ public class MovementController {
 	public void doAction(Tank tank) {
 		Gson gson = new Gson();
 		MoveCommand moveCommand = null;
-		System.out.println("In Doaction for MC");
-
 
 		Tank[] friendlies = gamestate.getFriendlyTanks();
 		Tank[] enemies = gamestate.getEnemyTanks();

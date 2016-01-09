@@ -191,11 +191,16 @@ public class GameState {
 	}
 	
 	public boolean canShoot(Tank shooter, Tank target) {
-		if (lineOfSight(shooter.position, target.position)  {
-				//&& inRange(shooter, target)) {
+		if (lineOfSight(shooter.position, target.position) 
+				&& inRange(shooter, target)) {
 			return true;
 		}
 		return false;
+	}
+	
+	public boolean inRange(Tank shooter, Tank target) {
+		double dist = getDistance(shooter, target);
+		return true;//if (dist <= shooter.projectiles)
 	}
 	
 	public boolean friendlyFire(double[] shooter, double[] target) {

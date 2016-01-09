@@ -191,7 +191,8 @@ public class GameState {
 	}
 	
 	public boolean canShoot(Tank shooter, Tank target) {
-		if (lineOfSight(shooter.position, target.position)) {
+		if (lineOfSight(shooter.position, target.position)  {
+				//&& inRange(shooter, target)) {
 			return true;
 		}
 		return false;

@@ -123,18 +123,23 @@ final class Client
 		
 		//while (true) {
 			while (true) {
-				tc = TurretController.getInstance(comm, clientToken, gameState);
-				mc = MovementController.getInstance(comm, clientToken, gameState);
-				
-				for (Tank tank : gameState.getFriendlyTanks()) {
-					if (tank.alive) {
-						tc.doAction(tank);
-						//mc.doAction(tank);
+				try {
+					tc = TurretController.getInstance(comm, clientToken, gameState);
+					mc = MovementController.getInstance(comm, clientToken, gameState);
+					
+					for (Tank tank : gameState.getFriendlyTanks()) {
+						if (tank.alive) {
+							tc.doAction(tank);
+							//mc.doAction(tank);
+						}
 					}
+					
+					jsonState = comm.getJSONGameState(); // Blocking wait for game state example
+					gameState = gson.fromJson(jsonState.toString(), GameState.class);
+				} catch (Exception e) {
+					
 				}
 				
-				jsonState = comm.getJSONGameState(); // Blocking wait for game state example
-				gameState = gson.fromJson(jsonState.toString(), GameState.class);
 				
 				/*
 				// make decisions

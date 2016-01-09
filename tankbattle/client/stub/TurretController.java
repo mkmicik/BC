@@ -118,7 +118,8 @@ public class TurretController {
 			Commands.FireCommand firecmd = null;
 			if (Math.abs(currentTank.turret - angleToTarget) < 0.05 && 
 					canFire(currentTank) && 
-					gamestate.canShoot(currentTank, target))  {
+					gamestate.canShoot(currentTank, target) && 
+					!gamestate.friendlyFire(currentTank.position, target.position)) {
 				// Need to check if shoot is off cooldown first.
 				firecmd = new Commands.FireCommand(clientToken, currentTank.id);
 				lastFired.put(currentTank.id, new Date());

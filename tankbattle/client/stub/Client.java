@@ -77,6 +77,7 @@ final class Client
 		Command command = new Command();
 
 		// retrieve the command to connect to the server
+		while (true) {
 		String connectCommand = command.getMatchConnectCommand(config.TeamName, config.Password, config.MatchToken);
 
 		// retrieve the communication singleton
@@ -124,7 +125,7 @@ final class Client
 		}
 		
 		//while (true) {
-			while (true) {
+			while (gameState.timeRemaining > 0) {
 				tc = TurretController.getInstance(comm, clientToken, gameState);
 				mc = MovementController.getInstance(comm, clientToken, gameState);
 				
@@ -162,7 +163,7 @@ final class Client
 			} 
 		//}
 		
-				
+		}
 		/**** END THE GAME ****/
 		
 		//System.out.println("Exiting...");

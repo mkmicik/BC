@@ -152,8 +152,8 @@ public class TurretController {
 		
 			double relativeX = target.position[0] - current.position[0];
 			double relativeY = target.position[1] - current.position[1];
-			//double angleToTarget = (Math.atan2(relativeY, relativeX));
-			double angleToTarget = calculateLeadLocation(current, target);
+			double angleToTarget = (Math.atan2(relativeY, relativeX));
+			//double angleToTarget = calculateLeadLocation(current, target);
 
 			if (angleToTarget < 0) {
 				angleToTarget = 2*Math.PI + angleToTarget;
